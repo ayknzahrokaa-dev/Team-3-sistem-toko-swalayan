@@ -1,7 +1,12 @@
 from abc import ABC, abstractmethod
+from validation_mixin import ValidationMixin
 
-class Barang(ABC):
+class Barang(ABC, ValidationMixin):
     def __init__(self, nama, harga_jual, harga_modal, stok, kategori):
+        self.validate_nama(nama)
+        self.validate_harga(harga_jual)
+        self.validate_stok(stok)
+
         self.nama = nama
         self.harga_jual = harga_jual
         self.__harga_modal = harga_modal
