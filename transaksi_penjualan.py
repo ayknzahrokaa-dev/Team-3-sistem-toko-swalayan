@@ -2,6 +2,7 @@ from diskon_mixin import DiskonMixin
 from log_mixin import LogMixin
 from detail_transaksi import DetailTransaksi
 from datetime import datetime
+from metode_pembayaran import MetodePembayaran
 
 class TransaksiPenjualan(DiskonMixin, LogMixin):
     def __init__(self):
@@ -27,3 +28,6 @@ class TransaksiPenjualan(DiskonMixin, LogMixin):
     def total_setelah_diskon_tetap(self, nominal):
         total = self.hitung_total()
         return self.hitung_diskon_tetap(total, nominal)
+    
+    def proses_pembayaran(self, metode_pembayaran, total_bayar):
+        return metode_pembayaran.bayar(total_bayar)
