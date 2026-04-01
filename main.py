@@ -1,5 +1,6 @@
 from makanan import Makanan
 from minuman import Minuman
+from rumah_tangga import RumahTangga
 from toko import TokoSwalayan
 from laporan_stok import LaporanStok
 from laporan_penjualan import LaporanPenjualan
@@ -24,11 +25,14 @@ def main():
     toko = TokoSwalayan()
 
     print("Admin menambahkan barang...\n")
-    barang1 = Makanan("Roti", 10000, 8000, 20, "2026-12-01", diskon=10)
-    barang2 = Minuman("Teh Botol", 5000, 3000, 30, "250ml", diskon=0)
+    barang1 = Makanan("Roti", 10000, 8000, 20,"2026-12-01",diskon=10,)
+    barang2 = Minuman("Teh Botol", 5000, 3000, 30, "250ml",diskon=0, )
+    barang3 = RumahTangga("Sabun Cuci", 15000, 10000, 25, "Deterjen", diskon=5)
+
 
     admin.tambah_barang(toko, barang1)
     admin.tambah_barang(toko, barang2)
+    admin.tambah_barang(toko, barang3)
 
     print("Daftar Barang:")
     for b in toko.daftar_barang:

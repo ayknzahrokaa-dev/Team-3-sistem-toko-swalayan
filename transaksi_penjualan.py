@@ -42,8 +42,10 @@ class TransaksiPenjualan(DiskonMixin, LogMixin):
 
         print("\nDaftar Belanja:")
         for item in self.daftar_item:
-            print(f"- {item.barang.nama} x{item.jumlah} = Rp{int(item.subtotal)}")
-        
+            b = item.barang
+        print(f"- {b.nama} x{item.jumlah} "
+              f"(Diskon {b.diskon}%) = Rp{int(item.subtotal)}")
+
         print(f"\nTotal: Rp{int(self.total)}")
         print(f"Metode Pembayaran: {metode}")
         

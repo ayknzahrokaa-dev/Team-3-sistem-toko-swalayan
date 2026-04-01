@@ -2,17 +2,27 @@ from abc import ABC, abstractmethod
 from validation_mixin import ValidationMixin
 
 class Barang(ABC, ValidationMixin):
-    def __init__(self, nama, harga_jual, harga_modal, stok, kategori):
+    def __init__(self, nama, harga_jual, harga_modal, stok, diskon, kategori):
         self.validate_nama(nama)
         self.validate_harga(harga_jual)
         self.validate_stok(stok)
 
         self.nama = nama
-        self.harga_jual = harga_jual
+        self.__harga_jual = harga_jual
         self.__harga_modal = harga_modal
         self.__stok = stok
-        self.diskon = 0
+        self.__diskon = 0
         self.kategori = kategori
+
+    @property
+    def harga_jual(self):
+        return self.__harga_jual
+
+    @harga_jual.setter
+    def harga_jual(self, value):
+        if value <= 0:
+            raise ValueError("Harga harus > 0")
+        self.__harga_jual = value
 
     @property
     def stok(self):
@@ -34,6 +44,16 @@ class Barang(ABC, ValidationMixin):
 
     def get_harga_modal(self):
         return self.__harga_modal
+    
+    @property
+    def diskon(self):
+        return self.__diskon
+
+    @diskon.setter
+    def diskon(self, value):
+        if value < 0 or value > 100:
+            raise ValueError("Diskon harus 0-100")
+        self.__diskon = value
 
     @abstractmethod
     def info_barang(self):
