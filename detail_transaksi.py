@@ -5,4 +5,7 @@ class DetailTransaksi:
         self.subtotal = self.hitung_subtotal()
 
     def hitung_subtotal(self):
-        return self.barang.harga_jual * self.jumlah
+        harga = self.barang.harga_jual
+        diskon = self.barang.diskon
+        harga_setelah_diskon = harga - (harga * diskon / 100)
+        return harga_setelah_diskon * self.jumlah

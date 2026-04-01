@@ -14,7 +14,7 @@ class TokoSwalayan:
                 return b
         return None
 
-    def buat_transaksi(self):
+    def buat_transaksi(self, pelanggan=None):
         transaksi = TransaksiPenjualan()
         self.daftar_transaksi.append(transaksi)
         return transaksi

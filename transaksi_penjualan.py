@@ -1,4 +1,5 @@
 from diskon_mixin import DiskonMixin
+from pelanggan import Pelanggan
 from log_mixin import LogMixin
 from detail_transaksi import DetailTransaksi
 from datetime import datetime
@@ -10,6 +11,7 @@ class TransaksiPenjualan(DiskonMixin, LogMixin):
         self.tanggal = datetime.now()
         self.daftar_item = []
         self.total = 0
+        self.pelanggan = Pelanggan=None  # 🔥 
 
     def tambah_item(self, barang, jumlah):
         barang.kurangi_stok(jumlah)
@@ -31,3 +33,22 @@ class TransaksiPenjualan(DiskonMixin, LogMixin):
     
     def proses_pembayaran(self, metode_pembayaran, total_bayar):
         return metode_pembayaran.bayar(total_bayar)
+    
+    def tampilkan_struk(self, metode, jumlah_bayar=None, kembalian=None):
+        print("\n=== STRUK PEMBELIAN ===")
+    
+        if self.pelanggan:
+             print(f"Pelanggan : {self.pelanggan.nama}")
+
+        print("\nDaftar Belanja:")
+        for item in self.daftar_item:
+            print(f"- {item.barang.nama} x{item.jumlah} = Rp{int(item.subtotal)}")
+        
+        print(f"\nTotal: Rp{int(self.total)}")
+        print(f"Metode Pembayaran: {metode}")
+        
+        if metode == "Tunai":
+            print(f"Uang Dibayar: Rp{jumlah_bayar}")
+            print(f"Kembalian: Rp{kembalian}")
+
+        print("======================\n")

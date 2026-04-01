@@ -5,6 +5,7 @@ from laporan_stok import LaporanStok
 from laporan_penjualan import LaporanPenjualan
 from admin import Admin
 from kasir import Kasir
+from pelanggan import Pelanggan
 from pembayaran_tunai import PembayaranTunai
 from pembayaran_ewallet import PembayaranEWallet
 
@@ -13,6 +14,7 @@ def main():
 
     admin = Admin("A01", "Budi")
     kasir = Kasir("K01", "Siti")
+    pelanggan = Pelanggan("P01", "Andi")
 
     print("User Sistem:")
     print(admin.info_user())
@@ -22,8 +24,8 @@ def main():
     toko = TokoSwalayan()
 
     print("Admin menambahkan barang...\n")
-    barang1 = Makanan("Roti", 10000, 8000, 20, "2026-12-01")
-    barang2 = Minuman("Teh Botol", 5000, 3000, 30, "250ml")
+    barang1 = Makanan("Roti", 10000, 8000, 20, "2026-12-01", diskon=10)
+    barang2 = Minuman("Teh Botol", 5000, 3000, 30, "250ml", diskon=0)
 
     admin.tambah_barang(toko, barang1)
     admin.tambah_barang(toko, barang2)
@@ -33,34 +35,26 @@ def main():
         print(f"- {b.info_barang()} | Harga: {b.harga_jual} | Stok: {b.stok}")
     print()
 
-    print("Kasir melakukan transaksi...\n")
-    transaksi = kasir.buat_transaksi(toko)
+    # TRANSAKSI
+    transaksi = toko.buat_transaksi(pelanggan)
 
-    transaksi.tambah_item(barang1, 2)  # beli 2 roti
-    transaksi.tambah_item(barang2, 3)  # beli 3 teh
+    transaksi.tambah_item(barang1, 2)
+    transaksi.tambah_item(barang2, 3)
 
     total = transaksi.hitung_total()
-    print(f"Total sebelum diskon: Rp{total}")
 
-    total_diskon_persen = transaksi.total_setelah_diskon_persen(10)
-    print(f"Total setelah diskon 10%: Rp{int(total_diskon_persen)}")
+    # PEMBAYARAN (TUNAI SAJA)
+    print("\nMemproses pembayaran...\n")
 
-    total_diskon_tetap = transaksi.total_setelah_diskon_tetap(5000)
-    print(f"Total setelah diskon Rp5000: Rp{int(total_diskon_tetap)}\n")
+    pembayaran = PembayaranTunai(50000)
+    kembalian = pembayaran.bayar(total)
 
-    total_bayar = transaksi.total_setelah_diskon_persen(10)
-
-    print(f"Total yang harus dibayar: Rp{int(total_bayar)}\n")
-
-    print("Pembayaran Tunai:")
-    tunai = PembayaranTunai(50000)
-    kembalian = transaksi.proses_pembayaran(tunai, total_bayar)
-    print(f"Kembalian: Rp{int(kembalian)}\n")
-
-    print("Pembayaran E-Wallet:")
-    ewallet = PembayaranEWallet(100000)
-    sisa = transaksi.proses_pembayaran(ewallet, total_bayar)
-    print(f"Sisa saldo: Rp{int(sisa)}\n")
+    # STRUK
+    transaksi.tampilkan_struk(
+        metode="Tunai",
+        jumlah_bayar=50000,
+        kembalian=kembalian
+    )
 
     print("Stok setelah transaksi:")
     for b in toko.daftar_barang:

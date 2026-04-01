@@ -11,6 +11,7 @@ class Barang(ABC, ValidationMixin):
         self.harga_jual = harga_jual
         self.__harga_modal = harga_modal
         self.__stok = stok
+        self.diskon = 0
         self.kategori = kategori
 
     @property
